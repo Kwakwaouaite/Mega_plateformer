@@ -34,13 +34,7 @@ public class PlayerAvatar : MonoBehaviour {
 	
     void ApplyGravity()
     {
-        Debug.Log(nearObjectDown);
-        if (nearObjectDown >= 0)
-        {
-            verticalAcceleration = 0;
-            isJumping = false;
-        }
-        else
+        if (isJumping)
             verticalAcceleration = Mathf.Max(-maxDownSpeed, verticalAcceleration - Time.deltaTime * downSpeedPerSec);
     }
     void Jump ()
@@ -49,7 +43,6 @@ public class PlayerAvatar : MonoBehaviour {
         {
             verticalAcceleration = jumpImpulse;
             isJumping = true;
-            Debug.Log("jump" + verticalAcceleration);
         }
     }
 
@@ -58,8 +51,28 @@ public class PlayerAvatar : MonoBehaviour {
         Jump();
         ApplyGravity();
         Debug.Log(verticalAcceleration);
-        position = position + new Vector2(Input.GetAxis("Horizontal") * speed, verticalAcceleration);
-        transform.position = position;
+        Vector2 newPosition = position + new Vector2(Input.GetAxis("Horizontal") * speed, verticalAcceleration);
+
+        if (nearObjectDown != -1 && newPosition.y < position.y - nearObjectDown)
+        {
+            newPosition.y = position.y - nearObjectDown;
+            isJumping = false;
+            verticalAcceleration = 0;
+        }
+        else if (nearObjectUp != -1 && newPosition.y < position.y + nearObjectUp)
+        {
+            newPosition.y = position.y + nearObjectUp;
+            verticalAcceleration = 0;
+        }
+
+        if (nearObjectLeft != -1 && newPosition.x < position.x - nearObjectLeft)
+            newPosition.x = position.x - nearObjectLeft;
+        
+        else if (nearObjectRight != -1 && newPosition.x > position.x + nearObjectRight)
+            newPosition.x = position.x + nearObjectRight;
+
+        transform.position = newPosition;
+        position = newPosition;
         
     }
 	// Update is called once per frame
@@ -75,7 +88,8 @@ public class PlayerAvatar : MonoBehaviour {
         RaycastHit2D hitRightUp = Physics2D.Raycast(position + boxSize / 2, Vector2.right, speed);
         RaycastHit2D hitRightDown = Physics2D.Raycast(position + new Vector2(1, -1) * boxSize / 2, Vector2.right, speed);
 
-        /*if (hitUpRight.collider != null || hitUpLeft.collider != null)
+
+        if (hitUpRight.collider != null || hitUpLeft.collider != null)
             nearObjectUp = Mathf.Max(hitUpRight.distance, hitUpLeft.distance);
         else
             nearObjectUp = -1;
@@ -88,13 +102,11 @@ public class PlayerAvatar : MonoBehaviour {
         if (hitLeftUp.collider != null || hitLeftDown.collider != null)
             nearObjectLeft = Mathf.Max(hitUpRight.distance, hitUpLeft.distance);
         else
-            nearObjectLeft = -1;*/
+            nearObjectLeft = -1;
 
         if (hitDownRight.collider != null || hitDownLeft.collider != null)
         {
             nearObjectDown = Mathf.Max(hitDownRight.distance, hitDownLeft.distance);
-            Debug.Log(hitDownRight.distance);
-            Debug.Log(hitDownLeft.distance);
         }
         else
             nearObjectDown = -1;
@@ -117,5 +129,6 @@ public class PlayerAvatar : MonoBehaviour {
     void Update () {
         updateCollisions();
         Mouvement();
+        Debug.Log(isJumping);
 	}
 }
