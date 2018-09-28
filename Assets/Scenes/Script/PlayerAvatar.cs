@@ -8,6 +8,8 @@ public class PlayerAvatar : MonoBehaviour {
     public float speed;
     public float maxDownSpeed;
     public float downSpeedPerSec;
+    public float innerDistBoxDetection = 0.99f;
+
     private float nearObjectUp;
     private float nearObjectDown;
     private float nearObjectRight;
@@ -18,13 +20,22 @@ public class PlayerAvatar : MonoBehaviour {
 
     private Vector2 position;
     private Vector2 boxSize;
-    private Collider2D playerCollider;
+
+    private Vector2 upLeftCorner;
+    private Vector2 upRightCorner;
+    private Vector2 downRightCorner;
+    private Vector2 downLeftCorner;
     
     void Start () {
         position = gameObject.transform.position;
         isJumping = false;
-        boxSize = gameObject.GetComponent<BoxCollider2D>().size;
-        playerCollider = gameObject.GetComponent<Collider2D>();
+        boxSize = gameObject.GetComponent<SpriteRenderer>().size * innerDistBoxDetection;
+        downLeftCorner = position - boxSize / 2;
+        upRightCorner = position + boxSize / 2;
+        downRightCorner = position + new Vector2(-1, 1) * boxSize / 2;
+        upLeftCorner = position + new Vector2(1, -1) * boxSize / 2;
+
+        Debug.Log("size" + boxSize);
 
         nearObjectDown = -1;
         nearObjectUp = -1;
@@ -39,7 +50,7 @@ public class PlayerAvatar : MonoBehaviour {
     }
     void Jump ()
     {
-        if (/*!isJumping && */Input.GetButtonDown("Jump"))
+        if (!isJumping && Input.GetButtonDown("Jump"))
         {
             verticalAcceleration = jumpImpulse;
             isJumping = true;
@@ -59,7 +70,7 @@ public class PlayerAvatar : MonoBehaviour {
             isJumping = false;
             verticalAcceleration = 0;
         }
-        else if (nearObjectUp != -1 && newPosition.y < position.y + nearObjectUp)
+        else if (nearObjectUp != -1 && newPosition.y > position.y + nearObjectUp)
         {
             newPosition.y = position.y + nearObjectUp;
             verticalAcceleration = 0;
@@ -77,17 +88,38 @@ public class PlayerAvatar : MonoBehaviour {
     }
 	// Update is called once per frame
 
+        void DebugDrawRay(RaycastHit2D ray, Vector2 startingPoint)
+    {
+        if (ray.collider != null)
+        {
+            Debug.DrawLine(startingPoint, ray.point);
+        }
+    }
+    
     void updateCollisions()
     {
-        RaycastHit2D hitUpRight = Physics2D.Raycast(position + boxSize / 2, Vector2.up, jumpImpulse);
-        RaycastHit2D hitUpLeft = Physics2D.Raycast(position + new Vector2(-1, 1) * boxSize / 2, Vector2.up, jumpImpulse);
-        RaycastHit2D hitLeftUp = Physics2D.Raycast(position + new Vector2(-1, 1) * boxSize / 2, Vector2.left, speed);
-        RaycastHit2D hitLeftDown = Physics2D.Raycast(position - boxSize / 2, Vector2.left, speed);
-        RaycastHit2D hitDownRight = Physics2D.Raycast(position + new Vector2(1, -1) * boxSize / 2, Vector2.down, maxDownSpeed);
-        RaycastHit2D hitDownLeft = Physics2D.Raycast(position - boxSize / 2, Vector2.down, maxDownSpeed);
-        RaycastHit2D hitRightUp = Physics2D.Raycast(position + boxSize / 2, Vector2.right, speed);
-        RaycastHit2D hitRightDown = Physics2D.Raycast(position + new Vector2(1, -1) * boxSize / 2, Vector2.right, speed);
+        downLeftCorner = position - boxSize / 2;
+        upRightCorner = position + boxSize / 2;
+        downRightCorner = position + new Vector2(1, -1) * boxSize / 2;
+        upLeftCorner = position + new Vector2(-1, 1) * boxSize / 2;
 
+        RaycastHit2D hitRightUp = Physics2D.Raycast(upRightCorner, Vector2.right, 100*speed);
+        RaycastHit2D hitUpRight = Physics2D.Raycast(upRightCorner, Vector2.up, 100*jumpImpulse);
+        RaycastHit2D hitUpLeft = Physics2D.Raycast(upLeftCorner, Vector2.up, 100*jumpImpulse);
+        RaycastHit2D hitLeftUp = Physics2D.Raycast(upLeftCorner, Vector2.left, 100*speed);
+        RaycastHit2D hitRightDown = Physics2D.Raycast(downRightCorner, Vector2.right, 100*speed);
+        RaycastHit2D hitDownRight = Physics2D.Raycast(downRightCorner, Vector2.down, 100*maxDownSpeed);
+        RaycastHit2D hitLeftDown = Physics2D.Raycast(downLeftCorner, Vector2.left, 100*speed);
+        RaycastHit2D hitDownLeft = Physics2D.Raycast(downLeftCorner, Vector2.down, 100*maxDownSpeed);
+
+        DebugDrawRay(hitRightUp, upRightCorner);
+        DebugDrawRay(hitUpRight, upRightCorner);
+        DebugDrawRay(hitUpLeft, upLeftCorner);
+        DebugDrawRay(hitLeftUp, upLeftCorner);
+        DebugDrawRay(hitDownRight, downRightCorner);
+        DebugDrawRay(hitRightDown, downRightCorner);
+        DebugDrawRay(hitDownLeft, downLeftCorner);
+        DebugDrawRay(hitLeftDown, downLeftCorner);
 
         if (hitUpRight.collider != null || hitUpLeft.collider != null)
             nearObjectUp = Mathf.Max(hitUpRight.distance, hitUpLeft.distance);
@@ -100,7 +132,7 @@ public class PlayerAvatar : MonoBehaviour {
             nearObjectRight = -1;
 
         if (hitLeftUp.collider != null || hitLeftDown.collider != null)
-            nearObjectLeft = Mathf.Max(hitUpRight.distance, hitUpLeft.distance);
+            nearObjectLeft = Mathf.Max(hitLeftUp.distance, hitLeftUp.distance);
         else
             nearObjectLeft = -1;
 
@@ -111,21 +143,7 @@ public class PlayerAvatar : MonoBehaviour {
         else
             nearObjectDown = -1;
     }
-    /*void OnCollisionStay2D(Collision2D other)
-    {
-        nearObjectDown = 0;
-        nearObjectUp = 0;
-        nearObjectRight = 0;
-        nearObjectLeft = 0;
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        nearObjectDown = -1;
-        nearObjectUp = -1;
-        nearObjectRight = -1;
-        nearObjectLeft = -1;
-    }*/
+    
     void Update () {
         updateCollisions();
         Mouvement();
