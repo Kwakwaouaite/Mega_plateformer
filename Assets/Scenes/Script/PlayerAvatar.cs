@@ -52,12 +52,12 @@ public class PlayerAvatar : MonoBehaviour {
     void ApplyGravity()
     {
         if (nearObjectDown != 0)
-            verticalSpeed = Mathf.Max(-gravity, verticalSpeed - Time.deltaTime * downSpeedPerSec);
+            verticalSpeed = Mathf.Max(-gravity, (verticalSpeed - downSpeedPerSec * Time.deltaTime));
+
     }
 
     bool IsTouchingSide (float sideDistance)
     {
-        Debug.Log(boxSize.x * (1 - innerDistBoxDetection) * 1.5f);
         return sideDistance <= boxSize.x * (1 - innerDistBoxDetection) * 1.1f;
     }
     void Jump ()
@@ -66,20 +66,23 @@ public class PlayerAvatar : MonoBehaviour {
         {
             if (IsTouchingSide(nearObjectDown))
             {
-                verticalSpeed = jumpImpulse;
+                verticalSpeed = Mathf.Min(jumpImpulse, verticalSpeed + jumpImpulse);
                 isJumping = true;
                 wallJumpImpulse = 0;
+                Debug.Log("down");
             }
 
             else if (IsTouchingSide(nearObjectLeft))
             {
-                verticalSpeed = jumpImpulse * percentageJumpImpLostWall;
+                Debug.Log("left");
+                verticalSpeed = Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall) ;
                 isJumping = true;
                 wallJumpImpulse = wallJumpLatImpVal;
             }
             else if (IsTouchingSide(nearObjectRight))
             {
-                verticalSpeed = jumpImpulse * percentageJumpImpLostWall;
+                Debug.Log("right");
+                verticalSpeed = Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall);
                 isJumping = true;
                 wallJumpImpulse = - wallJumpLatImpVal;
             }
@@ -97,9 +100,10 @@ public class PlayerAvatar : MonoBehaviour {
         Jump();
         ApplyGravity();
         horizontalSpeed =
-            Input.GetAxis("Horizontal") * maxHorizontalspeed * (IsTouchingSide(nearObjectDown)? 1 : percMidAirSpeedLost) + wallJumpImpulse;
+            Input.GetAxis("Horizontal") * maxHorizontalspeed *
+            (IsTouchingSide(nearObjectDown)? 1 : percMidAirSpeedLost) + wallJumpImpulse;
 
-        Vector2 newPosition = position + new Vector2(horizontalSpeed, verticalSpeed);
+        Vector2 newPosition = position + new Vector2(horizontalSpeed, verticalSpeed) * Time.deltaTime;
 
         if (nearObjectDown != -1 && newPosition.y - position.y < - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection))
         {
@@ -125,8 +129,6 @@ public class PlayerAvatar : MonoBehaviour {
             newPosition.x = position.x + nearObjectRight - boxSize.x * (1 - innerDistBoxDetection);
 
         }
-
-
         transform.position = newPosition;
         position = newPosition;
         
