@@ -5,10 +5,15 @@ using UnityEngine;
 public class PlayerAvatar : MonoBehaviour {
 
 	public float jumpImpulse;
-    public float speed;
-    public float maxDownSpeed;
+    public float maxHorizontalspeed;
+    public float gravity;
     public float downSpeedPerSec;
     public float innerDistBoxDetection = 0.99f;
+    public float wallJumpLatImpVal;
+    public float wallJumpDecreasePerSec;
+    public float percMidAirSpeedLost = 1;
+
+    public float percentageJumpImpLostWall = 1;
 
     private float nearObjectUp;
     private float nearObjectDown;
@@ -16,7 +21,9 @@ public class PlayerAvatar : MonoBehaviour {
     private float nearObjectLeft;
 
     private bool isJumping;
-    private float verticalAcceleration;
+    private float verticalSpeed;
+    private float horizontalSpeed;
+    private float wallJumpImpulse;
 
     private Vector2 position;
     private Vector2 boxSize;
@@ -45,49 +52,77 @@ public class PlayerAvatar : MonoBehaviour {
     void ApplyGravity()
     {
         if (nearObjectDown != 0)
-            verticalAcceleration = Mathf.Max(-maxDownSpeed, verticalAcceleration - Time.deltaTime * downSpeedPerSec);
+            verticalSpeed = Mathf.Max(-gravity, verticalSpeed - Time.deltaTime * downSpeedPerSec);
+    }
+
+    bool IsTouchingSide (float sideDistance)
+    {
+        Debug.Log(boxSize.x * (1 - innerDistBoxDetection) * 1.5f);
+        return sideDistance <= boxSize.x * (1 - innerDistBoxDetection) * 1.1f;
     }
     void Jump ()
     {
-        if (!isJumping && Input.GetButtonDown("Jump"))
+        if (Input.GetButton("Jump"))
         {
-            verticalAcceleration = jumpImpulse;
-            isJumping = true;
+            if (IsTouchingSide(nearObjectDown))
+            {
+                verticalSpeed = jumpImpulse;
+                isJumping = true;
+                wallJumpImpulse = 0;
+            }
+
+            else if (IsTouchingSide(nearObjectLeft))
+            {
+                verticalSpeed = jumpImpulse * percentageJumpImpLostWall;
+                isJumping = true;
+                wallJumpImpulse = wallJumpLatImpVal;
+            }
+            else if (IsTouchingSide(nearObjectRight))
+            {
+                verticalSpeed = jumpImpulse * percentageJumpImpLostWall;
+                isJumping = true;
+                wallJumpImpulse = - wallJumpLatImpVal;
+            }
+            else
+                wallJumpImpulse = Mathf.Sign(wallJumpImpulse) * 
+                    Mathf.Max(0, Mathf.Abs(wallJumpImpulse) - wallJumpDecreasePerSec * Time.deltaTime);
         }
+        else
+            wallJumpImpulse = Mathf.Sign(wallJumpImpulse) *
+                    Mathf.Max(0, Mathf.Abs(wallJumpImpulse) - wallJumpDecreasePerSec * Time.deltaTime);
     }
 
     void Mouvement()
     {
         Jump();
         ApplyGravity();
-        Vector2 newPosition = position + new Vector2(Input.GetAxis("Horizontal") * speed, verticalAcceleration);
+        horizontalSpeed =
+            Input.GetAxis("Horizontal") * maxHorizontalspeed * (IsTouchingSide(nearObjectDown)? 1 : percMidAirSpeedLost) + wallJumpImpulse;
+
+        Vector2 newPosition = position + new Vector2(horizontalSpeed, verticalSpeed);
 
         if (nearObjectDown != -1 && newPosition.y - position.y < - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection))
         {
             newPosition.y = position.y - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection);
             isJumping = false;
-            verticalAcceleration = 0;
-            Debug.Log("bas");
+            verticalSpeed = 0;
         }
         else if (nearObjectUp != -1 && newPosition.y - position.y >  nearObjectUp - boxSize.x * (1 - innerDistBoxDetection))
         {
             newPosition.y = position.y + nearObjectUp - boxSize.x * (1 - innerDistBoxDetection);
-            verticalAcceleration = 0;
-            Debug.Log("haut");
+            verticalSpeed = 0;
 
         }
 
         if (nearObjectLeft != -1 && newPosition.x - position.x < - nearObjectLeft + boxSize.x * (1 - innerDistBoxDetection))
         {
             newPosition.x = position.x - nearObjectLeft + boxSize.x * (1 - innerDistBoxDetection);
-            Debug.Log("gauche");
         }
 
 
         else if (nearObjectRight != -1 && newPosition.x - position.x >  nearObjectRight - boxSize.x * (1 - innerDistBoxDetection))
         {
             newPosition.x = position.x + nearObjectRight - boxSize.x * (1 - innerDistBoxDetection);
-            Debug.Log("droite pppbbpb");
 
         }
 
@@ -113,14 +148,14 @@ public class PlayerAvatar : MonoBehaviour {
         downRightCorner = position + new Vector2(1, -1) * boxSize / 2;
         upLeftCorner = position + new Vector2(-1, 1) * boxSize / 2;
 
-        RaycastHit2D hitRightUp = Physics2D.Raycast(upRightCorner, Vector2.right, 100*speed);
+        RaycastHit2D hitRightUp = Physics2D.Raycast(upRightCorner, Vector2.right, 100*maxHorizontalspeed);
         RaycastHit2D hitUpRight = Physics2D.Raycast(upRightCorner, Vector2.up, 100*jumpImpulse);
         RaycastHit2D hitUpLeft = Physics2D.Raycast(upLeftCorner, Vector2.up, 100*jumpImpulse);
-        RaycastHit2D hitLeftUp = Physics2D.Raycast(upLeftCorner, Vector2.left, 100*speed);
-        RaycastHit2D hitRightDown = Physics2D.Raycast(downRightCorner, Vector2.right, 100*speed);
-        RaycastHit2D hitDownRight = Physics2D.Raycast(downRightCorner, Vector2.down, 100*maxDownSpeed);
-        RaycastHit2D hitLeftDown = Physics2D.Raycast(downLeftCorner, Vector2.left, 100*speed);
-        RaycastHit2D hitDownLeft = Physics2D.Raycast(downLeftCorner, Vector2.down, 100*maxDownSpeed);
+        RaycastHit2D hitLeftUp = Physics2D.Raycast(upLeftCorner, Vector2.left, 100* maxHorizontalspeed);
+        RaycastHit2D hitRightDown = Physics2D.Raycast(downRightCorner, Vector2.right, 100* maxHorizontalspeed);
+        RaycastHit2D hitDownRight = Physics2D.Raycast(downRightCorner, Vector2.down, 100*gravity);
+        RaycastHit2D hitLeftDown = Physics2D.Raycast(downLeftCorner, Vector2.left, 100*maxHorizontalspeed);
+        RaycastHit2D hitDownLeft = Physics2D.Raycast(downLeftCorner, Vector2.down, 100*gravity);
 
         DebugDrawRay(hitRightUp, upRightCorner);
         DebugDrawRay(hitUpRight, upRightCorner);
