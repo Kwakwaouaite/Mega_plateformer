@@ -35,7 +35,6 @@ public class PlayerAvatar : MonoBehaviour {
         downRightCorner = position + new Vector2(-1, 1) * boxSize / 2;
         upLeftCorner = position + new Vector2(1, -1) * boxSize / 2;
 
-        Debug.Log("size" + boxSize);
 
         nearObjectDown = -1;
         nearObjectUp = -1;
@@ -45,7 +44,7 @@ public class PlayerAvatar : MonoBehaviour {
 	
     void ApplyGravity()
     {
-        if (isJumping)
+        if (nearObjectDown != 0)
             verticalAcceleration = Mathf.Max(-maxDownSpeed, verticalAcceleration - Time.deltaTime * downSpeedPerSec);
     }
     void Jump ()
@@ -61,26 +60,37 @@ public class PlayerAvatar : MonoBehaviour {
     {
         Jump();
         ApplyGravity();
-        Debug.Log(verticalAcceleration);
         Vector2 newPosition = position + new Vector2(Input.GetAxis("Horizontal") * speed, verticalAcceleration);
 
-        if (nearObjectDown != -1 && newPosition.y < position.y - nearObjectDown)
+        if (nearObjectDown != -1 && newPosition.y - position.y < - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection))
         {
-            newPosition.y = position.y - nearObjectDown;
+            newPosition.y = position.y - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection);
             isJumping = false;
             verticalAcceleration = 0;
+            Debug.Log("bas");
         }
-        else if (nearObjectUp != -1 && newPosition.y > position.y + nearObjectUp)
+        else if (nearObjectUp != -1 && newPosition.y - position.y >  nearObjectUp - boxSize.x * (1 - innerDistBoxDetection))
         {
-            newPosition.y = position.y + nearObjectUp;
+            newPosition.y = position.y + nearObjectUp - boxSize.x * (1 - innerDistBoxDetection);
             verticalAcceleration = 0;
+            Debug.Log("haut");
+
         }
 
-        if (nearObjectLeft != -1 && newPosition.x < position.x - nearObjectLeft)
-            newPosition.x = position.x - nearObjectLeft;
-        
-        else if (nearObjectRight != -1 && newPosition.x > position.x + nearObjectRight)
-            newPosition.x = position.x + nearObjectRight;
+        if (nearObjectLeft != -1 && newPosition.x - position.x < - nearObjectLeft + boxSize.x * (1 - innerDistBoxDetection))
+        {
+            newPosition.x = position.x - nearObjectLeft + boxSize.x * (1 - innerDistBoxDetection);
+            Debug.Log("gauche");
+        }
+
+
+        else if (nearObjectRight != -1 && newPosition.x - position.x >  nearObjectRight - boxSize.x * (1 - innerDistBoxDetection))
+        {
+            newPosition.x = position.x + nearObjectRight - boxSize.x * (1 - innerDistBoxDetection);
+            Debug.Log("droite pppbbpb");
+
+        }
+
 
         transform.position = newPosition;
         position = newPosition;
@@ -122,23 +132,23 @@ public class PlayerAvatar : MonoBehaviour {
         DebugDrawRay(hitLeftDown, downLeftCorner);
 
         if (hitUpRight.collider != null || hitUpLeft.collider != null)
-            nearObjectUp = Mathf.Max(hitUpRight.distance, hitUpLeft.distance);
+            nearObjectUp = Mathf.Min(hitUpRight.distance, hitUpLeft.distance);
         else
             nearObjectUp = -1;
 
         if (hitRightUp.collider != null || hitRightDown.collider != null)
-            nearObjectRight = Mathf.Max(hitRightUp.distance, hitRightDown.distance);
+            nearObjectRight = Mathf.Min(hitRightUp.distance, hitRightDown.distance);
         else
             nearObjectRight = -1;
 
         if (hitLeftUp.collider != null || hitLeftDown.collider != null)
-            nearObjectLeft = Mathf.Max(hitLeftUp.distance, hitLeftUp.distance);
+            nearObjectLeft = Mathf.Min(hitLeftUp.distance, hitLeftUp.distance);
         else
             nearObjectLeft = -1;
 
         if (hitDownRight.collider != null || hitDownLeft.collider != null)
         {
-            nearObjectDown = Mathf.Max(hitDownRight.distance, hitDownLeft.distance);
+            nearObjectDown = Mathf.Min(hitDownRight.distance, hitDownLeft.distance);
         }
         else
             nearObjectDown = -1;
@@ -147,6 +157,5 @@ public class PlayerAvatar : MonoBehaviour {
     void Update () {
         updateCollisions();
         Mouvement();
-        Debug.Log(isJumping);
 	}
 }
