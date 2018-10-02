@@ -28,7 +28,9 @@ public class Plateform_movemet : MonoBehaviour {
     // Use this for initialization
     void Start () {
         startCoord = startPoint.transform.position;
+        Debug.Assert(startCoord != null);
         endCoord = endPoint.transform.position;
+        Debug.Assert(endCoord != null);
     }
 	
 	// Update is called once per frame

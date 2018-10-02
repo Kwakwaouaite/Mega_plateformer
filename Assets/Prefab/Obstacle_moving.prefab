@@ -51,6 +51,7 @@ GameObject:
   - component: {fileID: 4901105230475568}
   - component: {fileID: 212573927461084036}
   - component: {fileID: 61436997451688858}
+  - component: {fileID: 114613244699216700}
   m_Layer: 0
   m_Name: Obstacle_moving
   m_TagString: Untagged
@@ -124,6 +125,22 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 8, y: 40}
   m_EdgeRadius: 0
+--- !u!114 &114613244699216700
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1211314744229176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e9dd964e055854799ce186cc35ee9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPoint: {fileID: 1037575604160984}
+  endPoint: {fileID: 1160374839945776}
+  speed: 20
+  t: 0
+  back: 0
 --- !u!212 &212573927461084036
 SpriteRenderer:
   m_ObjectHideFlags: 1
