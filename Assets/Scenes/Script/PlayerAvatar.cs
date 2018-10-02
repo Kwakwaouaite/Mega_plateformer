@@ -15,6 +15,8 @@ public class PlayerAvatar : MonoBehaviour {
 
     [SerializeField] private float percentageJumpImpLostWall = 1;
 
+    [SerializeField] private int maxNumberJump = 2;
+
     private float nearObjectUp;
     private float nearObjectDown;
     private float nearObjectRight;
@@ -25,6 +27,8 @@ public class PlayerAvatar : MonoBehaviour {
     private float verticalSpeed;
     private float horizontalSpeed;
     private float wallJumpImpulse;
+
+    private int currentJumpNumber;
 
     private Vector2 position;
     private Vector2 boxSize;
