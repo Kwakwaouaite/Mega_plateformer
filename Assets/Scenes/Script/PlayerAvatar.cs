@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class PlayerAvatar : MonoBehaviour {
 
-	public float jumpImpulse;
-    public float maxHorizontalspeed;
-    public float gravity;
-    public float downSpeedPerSec;
-    public float innerDistBoxDetection = 0.99f;
-    public float wallJumpLatImpVal;
-    public float wallJumpDecreasePerSec;
-    public float percMidAirSpeedLost = 1;
+	[SerializeField] private float jumpImpulse;
+    [SerializeField] private float maxHorizontalspeed;
+    [SerializeField] private float maxDownSpeed;
+    [SerializeField] private float downSpeedPerSec;
+    [SerializeField] private float innerDistBoxDetection = 0.99f;
+    [SerializeField] private float wallJumpLatImpVal;
+    [SerializeField] private float wallJumpDecreasePerSec;
+    [SerializeField] private float percMidAirSpeedLost = 1;
 
-    public float percentageJumpImpLostWall = 1;
+    [SerializeField] private float percentageJumpImpLostWall = 1;
 
     private float nearObjectUp;
     private float nearObjectDown;
@@ -52,7 +52,7 @@ public class PlayerAvatar : MonoBehaviour {
     void ApplyGravity()
     {
         if (nearObjectDown != 0)
-            verticalSpeed = Mathf.Max(-gravity, (verticalSpeed - downSpeedPerSec * Time.deltaTime));
+            verticalSpeed = Mathf.Max(-maxDownSpeed, (verticalSpeed - downSpeedPerSec * Time.deltaTime));
 
     }
 
@@ -62,7 +62,7 @@ public class PlayerAvatar : MonoBehaviour {
     }
     void Jump ()
     {
-        if (Input.GetButton("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             if (IsTouchingSide(nearObjectDown))
             {
@@ -155,9 +155,9 @@ public class PlayerAvatar : MonoBehaviour {
         RaycastHit2D hitUpLeft = Physics2D.Raycast(upLeftCorner, Vector2.up, 100*jumpImpulse);
         RaycastHit2D hitLeftUp = Physics2D.Raycast(upLeftCorner, Vector2.left, 100* maxHorizontalspeed);
         RaycastHit2D hitRightDown = Physics2D.Raycast(downRightCorner, Vector2.right, 100* maxHorizontalspeed);
-        RaycastHit2D hitDownRight = Physics2D.Raycast(downRightCorner, Vector2.down, 100*gravity);
+        RaycastHit2D hitDownRight = Physics2D.Raycast(downRightCorner, Vector2.down, 100*maxDownSpeed);
         RaycastHit2D hitLeftDown = Physics2D.Raycast(downLeftCorner, Vector2.left, 100*maxHorizontalspeed);
-        RaycastHit2D hitDownLeft = Physics2D.Raycast(downLeftCorner, Vector2.down, 100*gravity);
+        RaycastHit2D hitDownLeft = Physics2D.Raycast(downLeftCorner, Vector2.down, 100*maxDownSpeed);
 
         DebugDrawRay(hitRightUp, upRightCorner);
         DebugDrawRay(hitUpRight, upRightCorner);
