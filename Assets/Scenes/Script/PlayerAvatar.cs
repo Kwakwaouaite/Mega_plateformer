@@ -20,6 +20,7 @@ public class PlayerAvatar : MonoBehaviour {
     private float nearObjectRight;
     private float nearObjectLeft;
 
+
     private bool isJumping;
     private float verticalSpeed;
     private float horizontalSpeed;
