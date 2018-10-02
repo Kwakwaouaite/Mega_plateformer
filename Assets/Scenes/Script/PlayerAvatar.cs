@@ -122,8 +122,7 @@ public class PlayerAvatar : MonoBehaviour {
 
         if (nearObjectDown != -1 && newPosition.y - position.y < - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection))
         {
-            
-            Debug.Log(objectDown.name + " :" + objectDown.GetComponent<PlateformBase>().GetSpeed());
+            //Debug.Log(objectDown.name + " :" + objectDown.GetComponent<PlateformBase>().GetSpeed());
             Vector2 pushSpeed = objectDown.GetComponent<PlateformBase>().GetSpeed();
             newPosition.y = position.y - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection) + Mathf.Max(0, pushSpeed.y);
             newPosition.x += pushSpeed.x;

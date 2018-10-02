@@ -25,11 +25,12 @@ public class Plateform_movemet : PlateformBase
     
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
+        Debug.Assert(startPoint != null);
         startCoord = startPoint.transform.position;
-        Debug.Assert(startCoord != null);
+        Debug.Assert(endPoint != null);
         endCoord = endPoint.transform.position;
-        Debug.Assert(endCoord != null);
     }
 	
 	// Update is called once per frame
