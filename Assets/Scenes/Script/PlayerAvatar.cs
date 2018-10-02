@@ -23,12 +23,11 @@ public class PlayerAvatar : MonoBehaviour {
     private float nearObjectLeft;
 
 
-    private bool isJumping;
     private float verticalSpeed;
     private float horizontalSpeed;
     private float wallJumpImpulse;
 
-    private int currentJumpNumber;
+    private int currentNumberJump = 0;
 
     private Vector2 position;
     private Vector2 boxSize;
@@ -40,7 +39,6 @@ public class PlayerAvatar : MonoBehaviour {
     
     void Start () {
         position = gameObject.transform.position;
-        isJumping = false;
         boxSize = gameObject.GetComponent<SpriteRenderer>().size * innerDistBoxDetection;
         downLeftCorner = position - boxSize / 2;
         upRightCorner = position + boxSize / 2;
@@ -69,27 +67,22 @@ public class PlayerAvatar : MonoBehaviour {
     {
         if (Input.GetButtonDown("Jump"))
         {
-            if (IsTouchingSide(nearObjectDown))
-            {
-                verticalSpeed = Mathf.Min(jumpImpulse, verticalSpeed + jumpImpulse);
-                isJumping = true;
-                wallJumpImpulse = 0;
-                Debug.Log("down");
-            }
+            
 
-            else if (IsTouchingSide(nearObjectLeft))
+            if (IsTouchingSide(nearObjectLeft))
             {
-                Debug.Log("left");
                 verticalSpeed = Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall) ;
-                isJumping = true;
                 wallJumpImpulse = wallJumpLatImpVal;
             }
             else if (IsTouchingSide(nearObjectRight))
             {
-                Debug.Log("right");
                 verticalSpeed = Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall);
-                isJumping = true;
                 wallJumpImpulse = - wallJumpLatImpVal;
+            }
+            else if (IsTouchingSide(nearObjectDown) || currentNumberJump < maxNumberJump)
+            {
+                verticalSpeed = Mathf.Min(jumpImpulse, verticalSpeed + jumpImpulse);    
+                currentNumberJump += 1;
             }
             else
                 wallJumpImpulse = Mathf.Sign(wallJumpImpulse) * 
@@ -113,8 +106,8 @@ public class PlayerAvatar : MonoBehaviour {
         if (nearObjectDown != -1 && newPosition.y - position.y < - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection))
         {
             newPosition.y = position.y - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection);
-            isJumping = false;
             verticalSpeed = 0;
+            currentNumberJump = 0;
         }
         else if (nearObjectUp != -1 && newPosition.y - position.y >  nearObjectUp - boxSize.x * (1 - innerDistBoxDetection))
         {
@@ -138,7 +131,6 @@ public class PlayerAvatar : MonoBehaviour {
         position = newPosition;
         
     }
-	// Update is called once per frame
 
         void DebugDrawRay(RaycastHit2D ray, Vector2 startingPoint)
     {
