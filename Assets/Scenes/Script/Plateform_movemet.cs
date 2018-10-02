@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Plateform_movemet : MonoBehaviour {
+public class Plateform_movemet : PlateformBase
+{
 
     [SerializeField]
     private GameObject startPoint;
@@ -21,8 +22,6 @@ public class Plateform_movemet : MonoBehaviour {
 
     private Vector2 startCoord;
     private Vector2 endCoord;
-
-    private Vector2 velocity = Vector2.zero;
     
 
     // Use this for initialization
@@ -34,18 +33,17 @@ public class Plateform_movemet : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-        Debug.Log(t);
+	void Update ()
+    {
+        t = t + 1 / timeToTravel * (back ? -1 : 1) * Time.deltaTime;
+        if (t >= 1) back = true;
+        else if (t <= 0) back = false;
         Vector2 nextPosition = startCoord * (1 - t) + endCoord * t;
         velocity = nextPosition - (Vector2)gameObject.transform.position;
-        Debug.Log(velocity);
         gameObject.transform.position = nextPosition;
-        t = t + 1/timeToTravel * (back ? -1 : 1) * Time.deltaTime ;
-        if (t >= 1) back = true;
-        else if (t <= 0) back  = false;
 	}
 
-    Vector2 GetSpeed()
+    public override Vector2 GetSpeed()
     {
         return velocity;
     }

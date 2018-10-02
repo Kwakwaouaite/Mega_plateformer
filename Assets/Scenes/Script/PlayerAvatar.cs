@@ -28,6 +28,12 @@ public class PlayerAvatar : MonoBehaviour {
     private float nearObjectRight;
     private float nearObjectLeft;
 
+    private GameObject objectUp;
+    private GameObject objectDown;
+    private GameObject objectRight;
+    private GameObject objectLeft;
+
+
 
     private float verticalSpeed;
     private float horizontalSpeed;
@@ -116,8 +122,11 @@ public class PlayerAvatar : MonoBehaviour {
 
         if (nearObjectDown != -1 && newPosition.y - position.y < - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection))
         {
-            newPosition.y = position.y - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection);
-            verticalSpeed = 0;
+            
+            Debug.Log(objectDown.name + " :" + objectDown.GetComponent<PlateformBase>().GetSpeed());
+            Vector2 pushSpeed = objectDown.GetComponent<PlateformBase>().GetSpeed();
+            newPosition.y = position.y - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection) + Mathf.Max(0, pushSpeed.y);
+            newPosition.x += pushSpeed.x;
             currentNumberJump = 0;
         }
         else if (nearObjectUp != -1 && newPosition.y - position.y >  nearObjectUp - boxSize.x * (1 - innerDistBoxDetection))
@@ -193,10 +202,30 @@ public class PlayerAvatar : MonoBehaviour {
 
         if (hitDownRight.collider != null || hitDownLeft.collider != null)
         {
-            nearObjectDown = Mathf.Min(hitDownRight.distance, hitDownLeft.distance);
+            if (hitDownRight && hitDownLeft)
+            {
+                nearObjectDown = Mathf.Min(hitDownRight.distance, hitDownLeft.distance);
+                if (hitDownRight.distance < hitDownLeft.distance)
+                {
+                    objectDown = hitDownRight.transform.gameObject;
+                } else
+                {
+                    objectDown = hitDownLeft.transform.gameObject;
+                }
+
+            }else if (hitDownRight)
+            {
+                objectDown = hitDownRight.transform.gameObject;
+            } else
+            {
+                objectDown = hitDownLeft.transform.gameObject;
+            }
         }
         else
+        {
             nearObjectDown = -1;
+            objectDown = null;
+        }
     }
     
     void Update () {
