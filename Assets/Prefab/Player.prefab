@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1788659070184532}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -40.2, y: -19.2, z: 0}
+  m_LocalPosition: {x: -9.25, y: -21.67, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -81,8 +81,21 @@ MonoBehaviour:
   wallJumpLatImpVal: 80
   wallJumpDecreasePerSec: 150
   percMidAirSpeedLost: 0.7
+  percFrictionWall: 0
   percentageJumpImpLostWall: 1
   maxNumberJump: 2
+  hitRayUp:
+    serializedVersion: 2
+    m_Bits: 55
+  hitRayDown:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  hitRayRight:
+    serializedVersion: 2
+    m_Bits: 55
+  hitRayLeft:
+    serializedVersion: 2
+    m_Bits: 55
 --- !u!212 &212845847443845676
 SpriteRenderer:
   m_ObjectHideFlags: 1

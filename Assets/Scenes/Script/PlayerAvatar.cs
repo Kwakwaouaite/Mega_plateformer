@@ -18,6 +18,11 @@ public class PlayerAvatar : MonoBehaviour {
 
     [SerializeField] private int maxNumberJump = 2;
 
+    [SerializeField] private LayerMask hitRayUp;
+    [SerializeField] private LayerMask hitRayDown;
+    [SerializeField] private LayerMask hitRayRight;
+    [SerializeField] private LayerMask hitRayLeft;
+
     private float nearObjectUp;
     private float nearObjectDown;
     private float nearObjectRight;
@@ -153,14 +158,14 @@ public class PlayerAvatar : MonoBehaviour {
         downRightCorner = position + new Vector2(1, -1) * boxSize / 2;
         upLeftCorner = position + new Vector2(-1, 1) * boxSize / 2;
 
-        RaycastHit2D hitRightUp = Physics2D.Raycast(upRightCorner, Vector2.right, 100*maxHorizontalspeed);
-        RaycastHit2D hitUpRight = Physics2D.Raycast(upRightCorner, Vector2.up, 100*jumpImpulse);
-        RaycastHit2D hitUpLeft = Physics2D.Raycast(upLeftCorner, Vector2.up, 100*jumpImpulse);
-        RaycastHit2D hitLeftUp = Physics2D.Raycast(upLeftCorner, Vector2.left, 100* maxHorizontalspeed);
-        RaycastHit2D hitRightDown = Physics2D.Raycast(downRightCorner, Vector2.right, 100* maxHorizontalspeed);
-        RaycastHit2D hitDownRight = Physics2D.Raycast(downRightCorner, Vector2.down, 100*maxDownSpeed);
-        RaycastHit2D hitLeftDown = Physics2D.Raycast(downLeftCorner, Vector2.left, 100*maxHorizontalspeed);
-        RaycastHit2D hitDownLeft = Physics2D.Raycast(downLeftCorner, Vector2.down, 100*maxDownSpeed);
+        RaycastHit2D hitRightUp = Physics2D.Raycast(upRightCorner, Vector2.right, 100*maxHorizontalspeed, layerMask: hitRayRight);
+        RaycastHit2D hitUpRight = Physics2D.Raycast(upRightCorner, Vector2.up, 100*jumpImpulse, layerMask: hitRayUp);
+        RaycastHit2D hitUpLeft = Physics2D.Raycast(upLeftCorner, Vector2.up, 100*jumpImpulse, layerMask: hitRayUp);
+        RaycastHit2D hitLeftUp = Physics2D.Raycast(upLeftCorner, Vector2.left, 100* maxHorizontalspeed, layerMask: hitRayLeft);
+        RaycastHit2D hitRightDown = Physics2D.Raycast(downRightCorner, Vector2.right, 100* maxHorizontalspeed, layerMask: hitRayRight);
+        RaycastHit2D hitDownRight = Physics2D.Raycast(downRightCorner, Vector2.down, 100*maxDownSpeed, layerMask: hitRayDown);
+        RaycastHit2D hitLeftDown = Physics2D.Raycast(downLeftCorner, Vector2.left, 100*maxHorizontalspeed, layerMask: hitRayLeft);
+        RaycastHit2D hitDownLeft = Physics2D.Raycast(downLeftCorner, Vector2.down, 100*maxDownSpeed, layerMask: hitRayDown);
 
         DebugDrawRay(hitRightUp, upRightCorner);
         DebugDrawRay(hitUpRight, upRightCorner);
