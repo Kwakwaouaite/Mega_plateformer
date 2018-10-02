@@ -311,11 +311,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4787716817667950, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 9.7
+      value: -41.6
       objectReference: {fileID: 0}
     - target: {fileID: 4787716817667950, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -18.6
+      value: -19.5
       objectReference: {fileID: 0}
     - target: {fileID: 4787716817667950, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
       propertyPath: m_LocalPosition.z
@@ -599,6 +599,64 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1e2a80384f6c45c46a32c5d7472a31c6, type: 2}
   m_IsPrefabAsset: 0
+--- !u!1001 &866959328
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1230513486}
+    m_Modifications:
+    - target: {fileID: 4901105230475568, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 35.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4901105230475568, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -12.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4901105230475568, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4901105230475568, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4901105230475568, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4901105230475568, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4901105230475568, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4901105230475568, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_RootOrder
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4756900330100718, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -4.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4756900330100718, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201081166957072, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 31.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201081166957072, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -4.5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 246085881b748af499468a8b579c8af2, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!4 &947573818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4901105230475568, guid: c49f9174b1ed5c44bbf17289a3beb655,
@@ -859,6 +917,7 @@ Transform:
   - {fileID: 1642149578}
   - {fileID: 2068110757}
   - {fileID: 2002025994}
+  - {fileID: 1413852903}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -899,6 +958,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4193422382478360, guid: 1e2a80384f6c45c46a32c5d7472a31c6,
     type: 2}
   m_PrefabInternal: {fileID: 1138735570}
+--- !u!4 &1413852903 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4901105230475568, guid: 246085881b748af499468a8b579c8af2,
+    type: 2}
+  m_PrefabInternal: {fileID: 866959328}
 --- !u!4 &1451206787 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4901105230475568, guid: c49f9174b1ed5c44bbf17289a3beb655,
