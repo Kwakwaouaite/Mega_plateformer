@@ -12,6 +12,7 @@ public class PlayerAvatar : MonoBehaviour {
     [SerializeField] private float wallJumpLatImpVal;
     [SerializeField] private float wallJumpDecreasePerSec;
     [SerializeField] private float percMidAirSpeedLost = 1;
+    [SerializeField] private float percFrictionWall = 0;
 
     [SerializeField] private float percentageJumpImpLostWall = 1;
 
@@ -51,37 +52,42 @@ public class PlayerAvatar : MonoBehaviour {
         nearObjectRight = -1;
         nearObjectLeft = -1;
     }
-	
-    void ApplyGravity()
-    {
-        if (nearObjectDown != 0)
-            verticalSpeed = Mathf.Max(-maxDownSpeed, (verticalSpeed - downSpeedPerSec * Time.deltaTime));
 
-    }
-
-    bool IsTouchingSide (float sideDistance)
+    bool IsTouchingSide(float sideDistance)
     {
         return sideDistance <= boxSize.x * (1 - innerDistBoxDetection) * 1.1f;
     }
+    void ApplyGravity()
+    {
+        if (nearObjectDown != 0)
+        {
+            verticalSpeed = Mathf.Max(-maxDownSpeed, (verticalSpeed - downSpeedPerSec * Time.deltaTime));
+
+            if ((IsTouchingSide(nearObjectLeft) && Input.GetAxis("Horizontal") < 0) || 
+                (IsTouchingSide(nearObjectRight) && Input.GetAxis("Horizontal") > 0))
+                verticalSpeed *= (1 - percFrictionWall);
+        }
+
+
+    }
+
     void Jump ()
     {
         if (Input.GetButtonDown("Jump"))
         {
-            
-
-            if (IsTouchingSide(nearObjectLeft))
+            if (IsTouchingSide(nearObjectLeft) && !IsTouchingSide(nearObjectDown))
             {
-                verticalSpeed = Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall) ;
+                verticalSpeed = jumpImpulse * percentageJumpImpLostWall; // Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall) ;
                 wallJumpImpulse = wallJumpLatImpVal;
             }
-            else if (IsTouchingSide(nearObjectRight))
+            else if (IsTouchingSide(nearObjectRight) && !IsTouchingSide(nearObjectDown))
             {
-                verticalSpeed = Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall);
+                verticalSpeed = jumpImpulse * percentageJumpImpLostWall;// Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall);
                 wallJumpImpulse = - wallJumpLatImpVal;
             }
             else if (IsTouchingSide(nearObjectDown) || currentNumberJump < maxNumberJump)
             {
-                verticalSpeed = Mathf.Min(jumpImpulse, verticalSpeed + jumpImpulse);    
+                verticalSpeed = jumpImpulse;//Mathf.Min(jumpImpulse, verticalSpeed + jumpImpulse);    
                 currentNumberJump += 1;
             }
             else
