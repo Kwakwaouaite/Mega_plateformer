@@ -11,7 +11,7 @@ public class Plateform_movemet : MonoBehaviour {
     private GameObject endPoint;
 
     [SerializeField]
-    private float speed;
+    private float timeToTravel;
 
     [SerializeField]
     private float t;
@@ -40,7 +40,7 @@ public class Plateform_movemet : MonoBehaviour {
         velocity = nextPosition - (Vector2)gameObject.transform.position;
         Debug.Log(velocity);
         gameObject.transform.position = nextPosition;
-        t = t + speed/100 * (back ? -1 : 1) * Time.deltaTime ;
+        t = t + 1/timeToTravel * (back ? -1 : 1) * Time.deltaTime ;
         if (t >= 1) back = true;
         else if (t <= 0) back  = false;
 	}
