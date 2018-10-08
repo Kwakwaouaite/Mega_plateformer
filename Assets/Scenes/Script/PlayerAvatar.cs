@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAvatar : MonoBehaviour {
 
 	[SerializeField] private float jumpImpulse;
+    [SerializeField] private float maxTimePressJumpSec;
     [SerializeField] private float maxHorizontalspeed;
     [SerializeField] private float maxDownSpeed;
     [SerializeField] private float downSpeedPerSec;
@@ -40,6 +41,7 @@ public class PlayerAvatar : MonoBehaviour {
     private float wallJumpImpulse;
 
     private int currentNumberJump = 0;
+    private float timeStartJump = 0;
 
     private Vector2 position;
     private Vector2 boxSize;
@@ -100,10 +102,14 @@ public class PlayerAvatar : MonoBehaviour {
             {
                 verticalSpeed = jumpImpulse;//Mathf.Min(jumpImpulse, verticalSpeed + jumpImpulse);    
                 currentNumberJump += 1;
+                timeStartJump = Time.time;
             }
             else
                 wallJumpImpulse = Mathf.Sign(wallJumpImpulse) * 
                     Mathf.Max(0, Mathf.Abs(wallJumpImpulse) - wallJumpDecreasePerSec * Time.deltaTime);
+        } else if (Input.GetButton("Jump") && Time.time - timeStartJump < maxTimePressJumpSec)
+        {
+            verticalSpeed = jumpImpulse;
         }
         else
             wallJumpImpulse = Mathf.Sign(wallJumpImpulse) *
