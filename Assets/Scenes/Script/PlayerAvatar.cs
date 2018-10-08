@@ -123,6 +123,7 @@ public class PlayerAvatar : MonoBehaviour {
         if (nearObjectDown != -1 && newPosition.y - position.y < - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection))
         {
             //Debug.Log(objectDown.name + " :" + objectDown.GetComponent<PlateformBase>().GetSpeed());
+            Debug.Assert(objectDown.GetComponent<PlateformBase>());
             Vector2 pushSpeed = objectDown.GetComponent<PlateformBase>().GetSpeed();
             newPosition.y = position.y - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection) + Mathf.Max(0, pushSpeed.y);
             newPosition.x += pushSpeed.x;
@@ -130,7 +131,9 @@ public class PlayerAvatar : MonoBehaviour {
         }
         else if (nearObjectUp != -1 && newPosition.y - position.y >  nearObjectUp - boxSize.x * (1 - innerDistBoxDetection))
         {
-            newPosition.y = position.y + nearObjectUp - boxSize.x * (1 - innerDistBoxDetection);
+            Vector2 pushSpeed = objectUp.GetComponent<PlateformBase>().GetSpeed();
+            newPosition.y = position.y + nearObjectUp - boxSize.x * (1 - innerDistBoxDetection) + Mathf.Min(0, pushSpeed.y);
+            newPosition.x += pushSpeed.x;
             verticalSpeed = 0;
 
         }
@@ -184,10 +187,38 @@ public class PlayerAvatar : MonoBehaviour {
         DebugDrawRay(hitDownLeft, downLeftCorner);
         DebugDrawRay(hitLeftDown, downLeftCorner);
 
+        /*
         if (hitUpRight.collider != null || hitUpLeft.collider != null)
             nearObjectUp = Mathf.Min(hitUpRight.distance, hitUpLeft.distance);
         else
+            nearObjectUp = -1;*/
+
+        if (hitUpRight.collider != null || hitUpLeft.collider != null)
+        {
+            if (hitUpRight && hitUpLeft)
+            {
+                nearObjectUp = Mathf.Min(hitUpRight.distance, hitUpLeft.distance);
+                if (hitUpRight.distance < hitUpLeft.distance)
+                {
+                    objectUp = hitUpRight.transform.gameObject;
+                } else
+                {
+                    objectUp = hitUpLeft.transform.gameObject;
+                }
+
+            }else if (hitUpRight)
+            {
+                objectUp = hitUpRight.transform.gameObject;
+            } else
+            {
+                objectUp = hitUpLeft.transform.gameObject;
+            }
+        }
+        else
+        {
             nearObjectUp = -1;
+            objectUp = null;
+        }
 
         if (hitRightUp.collider != null || hitRightDown.collider != null)
             nearObjectRight = Mathf.Min(hitRightUp.distance, hitRightDown.distance);

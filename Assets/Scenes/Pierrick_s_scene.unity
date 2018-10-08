@@ -300,7 +300,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4201081166957072, guid: 246085881b748af499468a8b579c8af2, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 11.7
+      value: -3.7
       objectReference: {fileID: 0}
     - target: {fileID: 212573927461084036, guid: 246085881b748af499468a8b579c8af2,
         type: 2}
@@ -319,7 +319,16 @@ Prefab:
     - target: {fileID: 114613244699216700, guid: 246085881b748af499468a8b579c8af2,
         type: 2}
       propertyPath: timeToTravel
-      value: 4
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114613244699216700, guid: 246085881b748af499468a8b579c8af2,
+        type: 2}
+      propertyPath: t
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1211314744229176, guid: 246085881b748af499468a8b579c8af2, type: 2}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 246085881b748af499468a8b579c8af2, type: 2}
@@ -384,11 +393,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4787716817667950, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -9.25
+      value: 13.2
       objectReference: {fileID: 0}
     - target: {fileID: 4787716817667950, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -21.67
+      value: -17.5
       objectReference: {fileID: 0}
     - target: {fileID: 4787716817667950, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1052,11 +1061,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4756900330100718, guid: 246085881b748af499468a8b579c8af2, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 15.3
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4201081166957072, guid: 246085881b748af499468a8b579c8af2, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 15.1
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4201081166957072, guid: 246085881b748af499468a8b579c8af2, type: 2}
       propertyPath: m_LocalPosition.x
@@ -1215,32 +1224,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1510083616}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e5bfa1de5bbf2441b2dc9814409d701, type: 3}
+  m_Script: {fileID: 11500000, guid: dc548f38165b1e347ac719d7c6864b1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpImpulse: 0
-  maxHorizontalspeed: 0
-  maxDownSpeed: 0
-  downSpeedPerSec: 0
-  innerDistBoxDetection: 0.99
-  wallJumpLatImpVal: 0
-  wallJumpDecreasePerSec: 0
-  percMidAirSpeedLost: 1
-  percFrictionWall: 0
-  percentageJumpImpLostWall: 1
-  maxNumberJump: 2
-  hitRayUp:
-    serializedVersion: 2
-    m_Bits: 0
-  hitRayDown:
-    serializedVersion: 2
-    m_Bits: 0
-  hitRayRight:
-    serializedVersion: 2
-    m_Bits: 0
-  hitRayLeft:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!1 &1535336459
 GameObject:
   m_ObjectHideFlags: 0

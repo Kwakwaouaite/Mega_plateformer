@@ -29,7 +29,7 @@ public class Plateform_movemet : PlateformBase
     {
         Debug.Assert(startPoint != null);
         startCoord = startPoint.transform.position;
-        Debug.Assert(endPoint != null);
+        Debug.Assert(endPoint    != null);
         endCoord = endPoint.transform.position;
     }
 	
