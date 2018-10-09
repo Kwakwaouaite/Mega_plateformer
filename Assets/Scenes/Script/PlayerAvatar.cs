@@ -133,12 +133,14 @@ public class PlayerAvatar : MonoBehaviour {
             Vector2 pushSpeed = objectDown.GetComponent<PlateformBase>().GetSpeed();
             newPosition.y = position.y - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection) + Mathf.Max(0, pushSpeed.y);
             newPosition.x += pushSpeed.x;
+            wallJumpImpulse = 0;
             currentNumberJump = 0;
         }
         else if (nearObjectUp != -1 && newPosition.y - position.y >  nearObjectUp - boxSize.x * (1 - innerDistBoxDetection))
         {
             Vector2 pushSpeed = objectUp.GetComponent<PlateformBase>().GetSpeed();
             newPosition.y = position.y + nearObjectUp - boxSize.x * (1 - innerDistBoxDetection) + Mathf.Min(0, pushSpeed.y);
+            timeStartJump = -1;
             newPosition.x += pushSpeed.x;
             verticalSpeed = 0;
 
@@ -147,12 +149,14 @@ public class PlayerAvatar : MonoBehaviour {
         if (nearObjectLeft != -1 && newPosition.x - position.x < - nearObjectLeft + boxSize.x * (1 - innerDistBoxDetection))
         {
             newPosition.x = position.x - nearObjectLeft + boxSize.x * (1 - innerDistBoxDetection);
+            wallJumpImpulse = 0;
         }
 
 
         else if (nearObjectRight != -1 && newPosition.x - position.x >  nearObjectRight - boxSize.x * (1 - innerDistBoxDetection))
         {
             newPosition.x = position.x + nearObjectRight - boxSize.x * (1 - innerDistBoxDetection);
+            wallJumpImpulse = 0;
 
         }
         transform.position = newPosition;
