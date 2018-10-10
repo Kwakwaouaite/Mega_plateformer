@@ -76,8 +76,8 @@ public class PlayerAvatar : MonoBehaviour {
         {
             verticalSpeed = Mathf.Max(-maxDownSpeed, (verticalSpeed - downSpeedPerSec * Time.deltaTime));
 
-            if (!Input.GetButtonDown("Jump") && ((IsTouchingSide(nearObjectLeft) && Input.GetAxis("Horizontal") < 0) || 
-                (IsTouchingSide(nearObjectRight) && Input.GetAxis("Horizontal") > 0)))
+            if (!Input.GetButtonDown("Jump") && ((IsTouchingSide(nearObjectLeft) && Input.GetAxisRaw("Horizontal") < 0) || 
+                (IsTouchingSide(nearObjectRight) && Input.GetAxisRaw("Horizontal") > 0)))
                 verticalSpeed *= (1 - percFrictionWall);
         }
 
@@ -121,7 +121,7 @@ public class PlayerAvatar : MonoBehaviour {
         Jump();
         ApplyGravity();
         horizontalSpeed =
-            Input.GetAxis("Horizontal") * maxHorizontalspeed *
+            Input.GetAxisRaw("Horizontal") * maxHorizontalspeed *
             (IsTouchingSide(nearObjectDown)? 1 : percMidAirSpeedLost) + wallJumpImpulse;
 
         Vector2 newPosition = position + new Vector2(horizontalSpeed, verticalSpeed) * Time.deltaTime;
