@@ -122,11 +122,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4787716817667950, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 48.2
+      value: -48.5
       objectReference: {fileID: 0}
     - target: {fileID: 4787716817667950, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -10.8
+      value: -24.6
       objectReference: {fileID: 0}
     - target: {fileID: 4787716817667950, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
       propertyPath: m_LocalPosition.z
@@ -195,7 +195,7 @@ Prefab:
     - target: {fileID: 114229356448306290, guid: aeebd157f54c0bf41ac64cdaf05fe150,
         type: 2}
       propertyPath: wallJumpDecreasePerSec
-      value: 300
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 50924653236134158, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
