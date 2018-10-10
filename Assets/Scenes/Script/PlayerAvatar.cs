@@ -130,7 +130,7 @@ public class PlayerAvatar : MonoBehaviour {
         {
             //Debug.Log(objectDown.name + " :" + objectDown.GetComponent<PlateformBase>().GetSpeed());
             Debug.Assert(objectDown.GetComponent<PlateformBase>());
-            Vector2 pushSpeed = objectDown.GetComponent<PlateformBase>().GetSpeed();
+            Vector2 pushSpeed = objectDown.GetComponent<PlateformBase>() ? objectDown.GetComponent<PlateformBase>().GetSpeed() : new Vector2(0, 0);
             newPosition.y = position.y - nearObjectDown + boxSize.x * (1 - innerDistBoxDetection) + Mathf.Max(0, pushSpeed.y);
             newPosition.x += pushSpeed.x;
             wallJumpImpulse = 0;
@@ -138,7 +138,7 @@ public class PlayerAvatar : MonoBehaviour {
         }
         else if (nearObjectUp != -1 && newPosition.y - position.y >  nearObjectUp - boxSize.x * (1 - innerDistBoxDetection))
         {
-            Vector2 pushSpeed = objectUp.GetComponent<PlateformBase>().GetSpeed();
+            Vector2 pushSpeed = objectUp.GetComponent<PlateformBase>() ? objectUp.GetComponent<PlateformBase>().GetSpeed() : new Vector2(0, 0);
             newPosition.y = position.y + nearObjectUp - boxSize.x * (1 - innerDistBoxDetection) + Mathf.Min(0, pushSpeed.y);
             timeStartJump = -1;
             newPosition.x += pushSpeed.x;
