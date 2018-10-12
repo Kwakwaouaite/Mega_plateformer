@@ -152,11 +152,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114229356448306290, guid: aeebd157f54c0bf41ac64cdaf05fe150,
-        type: 2}
-      propertyPath: jumpImpulse
-      value: 30
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aeebd157f54c0bf41ac64cdaf05fe150, type: 2}
   m_IsPrefabAsset: 0
@@ -237,8 +232,7 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 61369983600933734, guid: 6ef212dda9bfc5b45b1cdeb99a2db9b8, type: 2}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ef212dda9bfc5b45b1cdeb99a2db9b8, type: 2}
   m_IsPrefabAsset: 0
 --- !u!4 &253440074 stripped
@@ -767,26 +761,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &854978468 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1963080072423976, guid: 6ef212dda9bfc5b45b1cdeb99a2db9b8,
-    type: 2}
-  m_PrefabInternal: {fileID: 201551102}
---- !u!58 &854978473
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 854978468}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 2
 --- !u!1001 &869191356
 Prefab:
   m_ObjectHideFlags: 0
