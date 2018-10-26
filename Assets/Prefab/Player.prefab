@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1788659070184532}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -47.2, y: 26, z: 0}
+  m_LocalPosition: {x: 39.65811, y: -13.698836, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -99,17 +99,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e5bfa1de5bbf2441b2dc9814409d701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpImpulse: 300
+  jumpImpulse: 30
   maxTimePressJumpSec: 0.15
-  maxHorizontalspeed: 40
+  maxHorizontalspeed: 35
   maxDownSpeed: 80
-  downSpeedPerSec: 250
-  innerDistBoxDetection: 0.95
+  downSpeedPerSec: 230
   wallJumpLatImpVal: 60
   wallJumpDecreasePerSec: 150
   percMidAirSpeedLost: 0.7
   percFrictionWall: 0.4
-  percentageJumpImpLostWall: 1.5
+  percWallJumpJumpImp: 1.4
   maxNumberJump: 2
   hitRayUp:
     serializedVersion: 2

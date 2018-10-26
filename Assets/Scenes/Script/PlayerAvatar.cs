@@ -9,13 +9,12 @@ public class PlayerAvatar : MonoBehaviour {
     [SerializeField] private float maxHorizontalspeed;
     [SerializeField] private float maxDownSpeed;
     [SerializeField] private float downSpeedPerSec;
-    [SerializeField] private float innerDistBoxDetection = 0.99f;
     [SerializeField] private float wallJumpLatImpVal;
     [SerializeField] private float wallJumpDecreasePerSec;
     [SerializeField] private float percMidAirSpeedLost = 1;
     [SerializeField] private float percFrictionWall = 0;
 
-    [SerializeField] private float percentageJumpImpLostWall = 1;
+    [SerializeField] private float percWallJumpJumpImp = 1;
 
     [SerializeField] private int maxNumberJump = 2;
 
@@ -23,6 +22,8 @@ public class PlayerAvatar : MonoBehaviour {
     [SerializeField] private LayerMask hitRayDown;
     [SerializeField] private LayerMask hitRayRight;
     [SerializeField] private LayerMask hitRayLeft;
+
+    private float innerDistBoxDetection = 0.95f;
 
     private float nearObjectUp;
     private float nearObjectDown;
@@ -90,12 +91,12 @@ public class PlayerAvatar : MonoBehaviour {
         {
             if (IsTouchingSide(nearObjectLeft) && !IsTouchingSide(nearObjectDown))
             {
-                verticalSpeed = jumpImpulse * percentageJumpImpLostWall; // Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall) ;
+                verticalSpeed = jumpImpulse * percWallJumpJumpImp; // Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall) ;
                 wallJumpImpulse = wallJumpLatImpVal;
             }
             else if (IsTouchingSide(nearObjectRight) && !IsTouchingSide(nearObjectDown))
             {
-                verticalSpeed = jumpImpulse * percentageJumpImpLostWall;// Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall);
+                verticalSpeed = jumpImpulse * percWallJumpJumpImp;// Mathf.Min(jumpImpulse * percentageJumpImpLostWall, verticalSpeed + jumpImpulse * percentageJumpImpLostWall);
                 wallJumpImpulse = - wallJumpLatImpVal;
             }
             else if (IsTouchingSide(nearObjectDown) || currentNumberJump < maxNumberJump)
