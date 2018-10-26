@@ -77,7 +77,7 @@ public class PlayerAvatar : MonoBehaviour {
         {
             verticalSpeed = Mathf.Max(-maxDownSpeed, (verticalSpeed - downSpeedPerSec * Time.deltaTime));
 
-            if (!Input.GetButtonDown("Jump") && ((IsTouchingSide(nearObjectLeft) && Input.GetAxisRaw("Horizontal") < 0) || 
+            if (!(Input.GetButton("Jump") && verticalSpeed > 0) && ((IsTouchingSide(nearObjectLeft) && Input.GetAxisRaw("Horizontal") < 0) || 
                 (IsTouchingSide(nearObjectRight) && Input.GetAxisRaw("Horizontal") > 0)))
                 verticalSpeed *= (1 - percFrictionWall);
         }
@@ -234,7 +234,10 @@ public class PlayerAvatar : MonoBehaviour {
         if (hitRightUp.collider != null || hitRightDown.collider != null)
             nearObjectRight = Mathf.Min(hitRightUp.distance, hitRightDown.distance);
         else
+        {
             nearObjectRight = -1;
+            Debug.Log("No hit right");
+        }
 
         if (hitLeftUp.collider != null || hitLeftDown.collider != null)
             nearObjectLeft = Mathf.Min(hitLeftUp.distance, hitLeftUp.distance);
